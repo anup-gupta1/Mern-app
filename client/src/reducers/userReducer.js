@@ -1,0 +1,26 @@
+import { GET_USERS, GET_CURRENT_USER } from "../actions/types";
+
+const initialState = {
+    user: "123qwe",
+    users: null,
+};
+
+
+export default function (state = initialState, action) {
+    switch (action.type) {
+        case GET_USERS:
+            return {
+                ...state,
+                users: action.payload
+            }
+        case GET_CURRENT_USER:
+            return {
+                ...state,
+                user: action.payload
+            }
+        default:
+            return state;
+
+
+    }
+}
