@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
 
 // Load Input Validation
 const validateUserInput = require('../../validation/addUser');
