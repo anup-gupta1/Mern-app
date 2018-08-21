@@ -9,8 +9,7 @@ const middlewar = [thunk];
 const store = createStore(
     rootReducer,
     initialState,
-    compose(applyMiddleware(...middlewar),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    compose(applyMiddleware(...middlewar)
     )
 );
 
