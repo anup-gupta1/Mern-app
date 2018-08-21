@@ -4,5 +4,5 @@ import userReducer from './userReducer';
 
 export default combineReducers({
     users: userReducer,
-    error: errorReducer
+    errors: errorReducer
 });

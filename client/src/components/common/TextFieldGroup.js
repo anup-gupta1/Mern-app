@@ -8,22 +8,19 @@ const TextFieldGroup = ({ name,
     error,
     type,
     labelname,
-    onChange,
-    disabled
+    onChange
 
 }) => {
     return (
         <div class="form-group">
-            <label htmlFor={name}>{labelname}
-                <input
-                    type={type}
-                    className={classnames("form-control form-control-lg", { 'is-invalid': error })} placeholder={placeholder}
-                    onChange={onChange}
-                    value={value}
-                    name={name}
-                    disabled={disabled}
-                />
-            </label>
+            <label htmlFor={name} style={{ marginRight: "200px" }}>{labelname}</label>
+            <input
+                type={type}
+                className={classnames("form-control ", { 'is-invalid': error })} placeholder={placeholder}
+                onChange={onChange}
+                value={value}
+                name={name}
+            />
             {error && (<div className="invalid-feedback">{error}</div>)}
         </div>
     );
@@ -36,8 +33,7 @@ TextFieldGroup.propTypes = {
     error: PropTypes.string,
     type: PropTypes.string.isRequired,
     labelname: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    disabled: PropTypes.string,
+    onChange: PropTypes.func.isRequired
 
 }
 

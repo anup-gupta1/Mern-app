@@ -30,12 +30,10 @@ module.exports = function validateUserInput(data) {
     if (Validator.isEmpty(data.contact)) {
         errors.contact = 'Contact is required';
     }
-
-    if (!Validator.isNumeric(data.contact)) {
+    else if (!Validator.isNumeric(data.contact)) {
         errors.contact = 'Contact must be a Number';
     }
-
-    if (!Validator.isLength(data.contact, { min: 10, max: 10 })) {
+    else if (!Validator.isLength(data.contact, { min: 10, max: 10 })) {
         errors.contact = 'Contact must be a 10 digit Number';
     }
 

@@ -1,36 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { getUsers } from '../actions/userAction';
 import UserItem from './UserItem';
-import AddUser from './AddUser';
 import EditDelete from './EditDelete';
-
-
-
-
 
 class ListUsers extends Component {
     constructor(props) {
         super(props);
-        // this.onClick = this.onClick.bind(this);
-        this.addClick = this.addClick.bind(this);
+        this.state = {
+            users: {}
+        }
     }
     componentDidMount() {
         this.props.getUsers();
+        this.setState({
+            users: this.props.users.users
+        })
     }
     componentWillReceiveProps(nextProps) {
+        if (nextProps.users.users) {
+            this.setState({
+                users: nextProps.users.users
+            })
+        }
+    }
 
-    }
-    onClick(id) {
-        alert(id);
-    }
-    addClick(e) {
-    }
     render() {
-        const { users } = this.props.users;
-
+        //const { users } = this.props.users;
+        const { users } = this.state;
         let userItems;
         if (users === null) {
             <p>No users found</p>
@@ -38,7 +37,7 @@ class ListUsers extends Component {
             if (users.length > 0) {
                 userItems = users.map(user => (
 
-                    <UserItem key={user._id} user={user} onClick={this.onClick.bind(this, user._id)} />
+                    <UserItem key={user._id} user={user} />
 
 
                 ));
@@ -50,10 +49,10 @@ class ListUsers extends Component {
             <div className="container mt-5">
                 <div className="container">
                     <h3 className="font-weight-bold user-top" style={{ float: 'left' }}>Users Directory</h3>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onClick={this.addClick} style={{ marginLeft: "45%", height: "40px" }} ><span className="fa-stack">
+                    <Link to="/add" type="button" className="btn btn-primary" style={{ marginLeft: "45%", height: "40px" }} ><span className="fa-stack">
                         <i className="fa fa-circle-thin fa-stack-2x pb-2"></i>
                         <i className="fa fa-plus fa-stack-1x pb-2"></i>
-                    </span> Add User </button>
+                    </span> Add User </Link>
                 </div><br /><br />
                 <table className="table">
                     <thead>
@@ -68,7 +67,6 @@ class ListUsers extends Component {
                         {userItems}
                     </tbody>
                 </table>
-                <AddUser />
                 <EditDelete />
             </div>
         )

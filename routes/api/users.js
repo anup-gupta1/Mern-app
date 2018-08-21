@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const keys = require('../../config/keys');
 const passport = require('passport');
 
 // Load Input Validation
@@ -22,25 +19,38 @@ router.post('/add', (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
+    if (req.body.id) {
+        const userFields = {};
+        if (req.body.name) userFields.name = req.body.name;
+        if (req.body.address) userFields.address = req.body.address;
+        if (req.body.email) userFields.email = req.body.email;
+        if (req.body.contact) userFields.contact = req.body.contact;
+        User.findOneAndUpdate(
+            { _id: req.body.id },
+            { $set: userFields },
+            { new: true }
+        ).then(profile => res.json(profile))
+            .catch(err => res.json({ "email": "Email does not exist" }));
+    } else {
+        User.findOne({ email: req.body.email }).then(user => {
+            if (user) {
+                errors.email = 'Email already exists';
+                return res.status(400).json(errors);
+            } else {
+                const newUser = new User({
+                    name: req.body.name,
+                    email: req.body.email,
+                    address: req.body.address,
+                    contact: req.body.contact
+                });
+                newUser
+                    .save()
+                    .then(user => res.json(user))
+                    .catch(err => console.log(err));
 
-    User.findOne({ email: req.body.email }).then(user => {
-        if (user) {
-            errors.email = 'Email already exists';
-            return res.status(400).json(errors);
-        } else {
-            const newUser = new User({
-                name: req.body.name,
-                email: req.body.email,
-                address: req.body.address,
-                contact: req.body.contact
-            });
-            newUser
-                .save()
-                .then(user => res.json(user))
-                .catch(err => console.log(err));
-
-        }
-    });
+            }
+        });
+    }
 });
 
 
@@ -82,23 +92,26 @@ router.get('/:id', (req, res) => {
 
 
 // @desc    Edit user
-router.post('/update/:id', (req, res) => {
+router.put('/update/:id', (req, res) => {
+
     const { errors, isValid } = validateUserInput(req.body);
 
     // Check Validation
     if (!isValid) {
         return res.status(400).json(errors);
     }
+
     const userFields = {};
     if (req.body.name) userFields.name = req.body.name;
-    if (req.body.address) userFields.name = req.body.address;
-    if (req.body.email) userFields.name = req.body.email;
-    if (req.body.contact) userFields.name = req.body.contact;
+    if (req.body.address) userFields.address = req.body.address;
+    if (req.body.email) userFields.email = req.body.email;
+    if (req.body.contact) userFields.contact = req.body.contact;
     User.findOneAndUpdate(
         { _id: req.params.id },
         { $set: userFields },
         { new: true }
-    ).then(profile => res.json(profile));
+    ).then(profile => res.json(profile))
+        .catch(err => res.json({ "email": "Email does not exist" }));
 
 });
 

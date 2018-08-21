@@ -19,7 +19,7 @@ export const addUser = (userData, history) => dispatch => {
 
 //Get all users
 export const getUsers = () => dispatch => {
-    axios.get('api/users/all')
+    axios.get('/api/users/all')
         .then(res => {
             dispatch({
                 type: GET_USERS,
@@ -50,9 +50,11 @@ export const getCurrentUser = id => dispatch => {
 
 
 //update user
-export const updateUser = (userData, history) => dispatch => {
+export const updateUser = (userData, id, history) => dispatch => {
+    console.log("user update action");
+    console.log(id);
     axios
-        .post(`/api/users/update/${userData.email}`, userData)
+        .put(`/api/users/update/${id}`, userData)
         .then(res => history.push('/all'))
         .catch(err =>
             dispatch({
@@ -66,11 +68,13 @@ export const updateUser = (userData, history) => dispatch => {
 export const deleteUser = id => dispatch => {
     axios
         .delete(`/api/users/${id}`)
-        .then(res =>
+        .then(res => {
+            console.log(res.data);
             dispatch({
                 type: GET_USERS,
                 payload: res.data
             })
+        }
         )
         .catch(err =>
             dispatch({

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Navbar from './components/layout/Navbar';
 import ListUsers from './components/ListUsers';
+import AddUser from './components/AddUser';
+import EditUser from './components/EditUser';
 import Footer from './components/layout/Footer';
 
 import './App.css';
@@ -15,7 +17,9 @@ class App extends Component {
         <Router>
           <div className="App">
             <Navbar />
-            <ListUsers />
+            <Route exact path="/all" component={ListUsers} />
+            <Route exact path="/add" component={AddUser} />
+            <Route exact path="/edit" component={EditUser} />
             <Footer />
           </div>
         </Router>
